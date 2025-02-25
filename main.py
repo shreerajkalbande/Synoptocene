@@ -1,7 +1,7 @@
 import os
 from datetime import date
-from flask import Flask, abort, render_template, redirect, url_for, flash
-from flask_bootstrap import Bootstrap5
+from flask import Flask, abort, render_template, redirect, url_for, flash, request, current_app, jsonify
+from flask_bootstrap import Bootstrap4
 from flask_ckeditor import CKEditor
 from flask_gravatar import Gravatar
 from flask_login import UserMixin, login_user, LoginManager, current_user, logout_user
@@ -9,33 +9,49 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship, DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String, Text
 from functools import wraps
+from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import relationship
 # Import your forms from the forms.py
 from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm
-
+import cv2  # OpenCV for video processing
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
 '''
 Make sure the required packages are installed: 
 Open the Terminal in PyCharm (bottom left). 
-
-On Windows type:
-python -m pip install -r requirements.txt
 
 On MacOS type:
 pip3 install -r requirements.txt
 
 This will install the packages from the requirements.txt for this project.
 '''
+from dotenv import load_dotenv
+
+load_dotenv()  # Load environment variables from .env file
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('FLASK_KEY')
+app.config['SECRET_KEY'] = os.getenv('FLASK_KEY')
+
 ckeditor = CKEditor(app)
-Bootstrap5(app)
+Bootstrap4(app)
 
 # Configure Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+UPLOAD_FOLDER = "static/uploads"
+ALLOWED_EXTENSIONS = {"mp4", "avi", "mov"}
+
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+# Google Drive Authentication
+gauth = GoogleAuth()
+gauth.LocalWebserverAuth()
+drive = GoogleDrive(gauth)
+
+# ADD THE FUNCTION HERE
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -153,6 +169,33 @@ def register():
         return redirect(url_for("get_all_posts"))
     return render_template("register.html", form=form, current_user=current_user)
 
+@app.route("/upload", methods=["GET", "POST"])
+def upload_file():
+    if request.method == "POST":
+        if "file" not in request.files:
+            flash("No file part")
+            return redirect(request.url)
+
+        file = request.files["file"]
+
+        if file.filename == "":
+            flash("No selected file")
+            return redirect(request.url)
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)  # Use secure filename
+            filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+            file.save(filepath)
+
+            # Upload to Google Drive
+            gfile = drive.CreateFile({"title": filename})
+            gfile.SetContentFile(filepath)
+            gfile.Upload()
+
+            flash("File successfully uploaded to Google Drive")
+            return redirect(url_for("get_all_posts"))  # Change this as needed
+
+    return render_template("upload.html", current_user=current_user)
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -273,6 +316,20 @@ def about():
 def contact():
     return render_template("contact.html", current_user=current_user)
 
+video_path = "/Users/shreerajkalbande/PycharmProjects/My-Blog-Website/static/uploads/SampleVideo_1280x720_1mb.mp4"
+cap = cv2.VideoCapture(video_path)
+
+if not cap.isOpened():
+    print("Error: Cannot open video file")
+else:
+    print("Video loaded successfully")
+    ret, frame = cap.read()
+    if ret:
+        print("Frame read successfully")
+    else:
+        print("Failed to read the first frame")
+
+cap.release()
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
