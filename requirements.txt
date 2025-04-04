@@ -2,7 +2,7 @@ attrs==25.3.0
 bleach==6.2.0
 blinker==1.9.0
 Bootstrap-Flask==2.3.3
-Brotli @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_f7i0oxypt6/croot/brotli-split_1736182464088/work
+Brotli
 cachetools==5.5.2
 certifi==2025.1.31
 charset-normalizer==3.4.1
