@@ -1,3 +1,3 @@
 A Audio-visual Video Summariser.
 
-Made by Shreeraj Kalbande that uses the best pipeline for efficient video processing.
+Made by me(Shreeraj Kalbande) that uses the best pipeline possible for efficient video and audio processing.
