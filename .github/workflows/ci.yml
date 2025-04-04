@@ -34,4 +34,4 @@ jobs:
       - name: Run tests with pytest
         run: |
           pip install pytest
-          pytest --maxfail=5 --disable-warnings
+          PYTHONPATH=. pytest --maxfail=1 --disable-warnings -q
