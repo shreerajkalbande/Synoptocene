@@ -65,6 +65,6 @@ urllib3==2.3.0
 webencodings==0.5.1
 websocket-client
 websockets==15.0.1
-Werkzeug==2.2.3
+Werkzeug>=2.3.3
 wsproto
 WTForms==3.0.1
