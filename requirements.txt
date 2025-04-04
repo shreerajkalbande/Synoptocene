@@ -1,29 +1,70 @@
+attrs==25.3.0
+bleach==6.2.0
 blinker==1.9.0
 Bootstrap-Flask==2.3.3
+Brotli @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_f7i0oxypt6/croot/brotli-split_1736182464088/work
+cachetools==5.5.2
+certifi==2025.1.31
+charset-normalizer==3.4.1
 click==8.1.8
+colorama @ file:///home/conda/feedstock_root/build_artifacts/colorama_1733218098505/work
 Flask==2.3.2
 Flask-CKEditor==0.5.1
 Flask-Gravatar==0.5.0
 Flask-Login==0.6.3
 Flask-SQLAlchemy==3.1.1
 Flask-WTF==1.2.1
+google-api-core==2.24.1
+google-api-python-client==2.161.0
+google-auth==2.38.0
+google-auth-httplib2==0.2.0
+googleapis-common-protos==1.68.0
 gunicorn==21.2.0
+h11 @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_110bmw2coo/croot/h11_1706652289620/work
+httplib2==0.22.0
+idna==3.10
+iniconfig==2.1.0
 itsdangerous==2.2.0
 Jinja2==3.1.5
+kaggle @ git+https://github.com/Kaggle/kaggle-api.git@b58a85a042c4068c16dcd379252251a4dcb0e745
 MarkupSafe==3.0.2
-packaging==24.2
-psycopg2-binary==2.9.9
-SQLAlchemy==2.0.38
-typing_extensions==4.12.2
-Werkzeug==3.0.0
-WTForms==3.0.1
-python-dotenv==1.0.1
-
-# OpenCV for image processing
+numpy @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_a51i_mbs7m/croot/numpy_and_numpy_base_1708638620867/work/dist/numpy-1.26.4-cp311-cp311-macosx_11_0_arm64.whl#sha256=3d90dd3382cff7becb2384f73058a8e72b81c697e8bb77f1c69a82caca5b0c57
+oauth2client==4.1.3
 opencv-python==4.9.0.80
-
-pip~=25.0
-zlib~=1.3.1
-wheel~=0.45.1
-openssl~=3.4.1
-setuptools~=75.8.0
+outcome==1.3.0.post0
+packaging @ file:///home/conda/feedstock_root/build_artifacts/packaging_1733203243479/work
+pluggy==1.5.0
+proto-plus==1.26.0
+protobuf==6.30.1
+psycopg2-binary==2.9.9
+pyasn1==0.6.1
+pyasn1_modules==0.4.1
+PyDrive==1.3.1
+pyparsing==3.2.1
+PySocks @ file:///Users/cbousseau/work/recipes/ci_py311/pysocks_1677906386870/work
+pytest==8.3.5
+python-dateutil==2.9.0.post0
+python-dotenv==1.0.1
+python-slugify==8.0.4
+PyYAML==6.0.2
+requests==2.32.3
+rsa==4.9
+selenium @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_d2gix6t_ep/croot/selenium_1727169281484/work
+six==1.17.0
+sniffio==1.3.1
+sortedcontainers @ file:///tmp/build/80754af9/sortedcontainers_1623949099177/work
+SQLAlchemy==2.0.38
+text-unidecode==1.3
+tqdm==4.67.1
+trio==0.29.0
+trio-websocket @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_b3qpkzng3m/croot/trio-websocket_1741025730813/work
+typing_extensions @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_0b3jpv_f79/croot/typing_extensions_1734714864260/work
+undetected-chromedriver==3.5.5
+uritemplate==4.1.1
+urllib3==2.3.0
+webencodings==0.5.1
+websocket-client @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_d37u7gqts8/croot/websocket-client_1715878310260/work
+websockets==15.0.1
+Werkzeug==2.2.3
+wsproto @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_ba0dr5u245/croot/wsproto_1725051559549/work
+WTForms==3.0.1

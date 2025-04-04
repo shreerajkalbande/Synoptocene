@@ -120,6 +120,13 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
   line-height: 1.2;
 }
 
+#summaryContainer {
+    max-height: 400px;  /* adjust as needed */
+    overflow-y: auto;
+    padding: 1rem;
+    border: 1px solid #ddd;
+}
+
 h1, .h1 {
   font-size: calc(1.375rem + 1.5vw);
 }
@@ -3686,10 +3693,12 @@ textarea.form-control-lg {
   justify-content: space-between;
 }
 .navbar-brand {
+  font-size: 2.5rem; /* Adjust size as needed */
+  font-weight: bold; /* Makes it thicker */
+  letter-spacing: 2px; /* Adds spacing */
   padding-top: var(--bs-navbar-brand-padding-y);
   padding-bottom: var(--bs-navbar-brand-padding-y);
   margin-right: var(--bs-navbar-brand-margin-end);
-  font-size: var(--bs-navbar-brand-font-size);
   color: var(--bs-navbar-brand-color);
   white-space: nowrap;
 }

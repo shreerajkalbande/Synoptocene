@@ -1,37 +1,41 @@
 import os
 from datetime import date
-from flask import Flask, abort, render_template, redirect, url_for, flash, request, current_app, jsonify
+from flask import Flask, abort, render_template, redirect, url_for, flash, request, jsonify
 from flask_bootstrap import Bootstrap4
 from flask_ckeditor import CKEditor
 from flask_gravatar import Gravatar
 from flask_login import UserMixin, login_user, LoginManager, current_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
+from selenium.common import TimeoutException
 from sqlalchemy.orm import relationship, DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String, Text
 from functools import wraps
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy.orm import relationship
 # Import your forms from the forms.py
 from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm
+from flask import session
+
 import cv2  # OpenCV for video processing
-from pydrive.auth import GoogleAuth
-from pydrive.drive import GoogleDrive
-'''
-Make sure the required packages are installed: 
-Open the Terminal in PyCharm (bottom left). 
 
-On MacOS type:
-pip3 install -r requirements.txt
+# ---- Selenium Imports ----
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+# from selenium.webdriver.chrome.options import Options  # (Advanced options if needed)
+from selenium.webdriver import Keys
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium import webdriver
+from selenium.webdriver.common.by import By
 
-This will install the packages from the requirements.txt for this project.
-'''
 from dotenv import load_dotenv
-
 load_dotenv()  # Load environment variables from .env file
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('FLASK_KEY')
+app.secret_key = "your_secret_key_here"  # Keep this secret
 
 ckeditor = CKEditor(app)
 Bootstrap4(app)
@@ -44,19 +48,13 @@ UPLOAD_FOLDER = "static/uploads"
 ALLOWED_EXTENSIONS = {"mp4", "avi", "mov"}
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-# Google Drive Authentication
-gauth = GoogleAuth()
-gauth.LocalWebserverAuth()
-drive = GoogleDrive(gauth)
 
-# ADD THE FUNCTION HERE
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @login_manager.user_loader
 def load_user(user_id):
     return db.get_or_404(User, user_id)
-
 
 # For adding profile images to the comment section
 gravatar = Gravatar(app,
@@ -68,87 +66,75 @@ gravatar = Gravatar(app,
                     use_ssl=False,
                     base_url=None)
 
-# CREATE DATABASE
+# -----------------------
+# DATABASE SETUP
+# -----------------------
 class Base(DeclarativeBase):
     pass
+
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URI", "sqlite:///posts.db")
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
-
-# CONFIGURE TABLES
+# -----------------------
+# TABLES
+# -----------------------
 class BlogPost(db.Model):
     __tablename__ = "blog_posts"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    # Create Foreign Key, "users.id" the users refers to the tablename of User.
     author_id: Mapped[int] = mapped_column(Integer, db.ForeignKey("users.id"))
-    # Create reference to the User object. The "posts" refers to the posts property in the User class.
     author = relationship("User", back_populates="posts")
     title: Mapped[str] = mapped_column(String(250), unique=True, nullable=False)
     subtitle: Mapped[str] = mapped_column(String(250), nullable=False)
     date: Mapped[str] = mapped_column(String(250), nullable=False)
     body: Mapped[str] = mapped_column(Text, nullable=False)
     img_url: Mapped[str] = mapped_column(String(250), nullable=False)
-    # Parent relationship to the comments
     comments = relationship("Comment", back_populates="parent_post")
 
 
-# Create a User table for all your registered users
 class User(UserMixin, db.Model):
     __tablename__ = "users"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     email: Mapped[str] = mapped_column(String(100), unique=True)
     password: Mapped[str] = mapped_column(String(100))
     name: Mapped[str] = mapped_column(String(100))
-    # This will act like a list of BlogPost objects attached to each User.
-    # The "author" refers to the author property in the BlogPost class.
     posts = relationship("BlogPost", back_populates="author")
-    # Parent relationship: "comment_author" refers to the comment_author property in the Comment class.
     comments = relationship("Comment", back_populates="comment_author")
 
 
-# Create a table for the comments on the blog posts
 class Comment(db.Model):
     __tablename__ = "comments"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     text: Mapped[str] = mapped_column(Text, nullable=False)
-    # Child relationship:"users.id" The users refers to the tablename of the User class.
-    # "comments" refers to the comments property in the User class.
     author_id: Mapped[int] = mapped_column(Integer, db.ForeignKey("users.id"))
     comment_author = relationship("User", back_populates="comments")
-    # Child Relationship to the BlogPosts
-    post_id: Mapped[str] = mapped_column(Integer, db.ForeignKey("blog_posts.id"))
+    post_id: Mapped[int] = mapped_column(Integer, db.ForeignKey("blog_posts.id"))
     parent_post = relationship("BlogPost", back_populates="comments")
-
 
 with app.app_context():
     db.create_all()
 
-
-# Create an admin-only decorator
+# -----------------------
+# DECORATORS
+# -----------------------
 def admin_only(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        # If id is not 1 then return abort with 403 error
         if current_user.id != 1:
             return abort(403)
-        # Otherwise continue with the route function
         return f(*args, **kwargs)
-
     return decorated_function
 
-
-# Register new users into the User database
+# -----------------------
+# ROUTES
+# -----------------------
 @app.route('/register', methods=["GET", "POST"])
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-
-        # Check if user email is already present in the database.
         result = db.session.execute(db.select(User).where(User.email == form.email.data))
         user = result.scalar()
         if user:
-            # User already exists
             flash("You've already signed up with that email, log in instead!")
             return redirect(url_for('login'))
 
@@ -164,38 +150,378 @@ def register():
         )
         db.session.add(new_user)
         db.session.commit()
-        # This line will authenticate the user with Flask-Login
         login_user(new_user)
         return redirect(url_for("get_all_posts"))
     return render_template("register.html", form=form, current_user=current_user)
 
+import subprocess
+import shutil
+# 1) Folder where you keep your local Kaggle dataset mirror:
+KAGGLE_DATASET_FOLDER = os.path.join(os.getcwd(), "kaggle_dataset_folder")
+
+# # 2) Folder containing your .ipynb + kernel-metadata.json:
+# KAGGLE_KERNEL_FOLDER = os.path.join(os.getcwd(), "")
+chatgpt_driver = None
+global_driver = None
+upload_counter = 0  # 0 means first upload
+final_summary = None
+# Global variable for the ChatGPT driver
+
+def update_kaggle_dataset(video_file_path):
+    """
+    Copies the new video into your local Kaggle dataset folder,
+    then creates a new dataset version on Kaggle.
+    """
+    try:
+        # Copy the uploaded video into the local dataset mirror
+        shutil.copy(video_file_path, KAGGLE_DATASET_FOLDER)
+        print(f"✅ Copied {video_file_path} to {KAGGLE_DATASET_FOLDER}.")
+
+        # 'kaggle datasets version' to create a new dataset version
+        cmd = [
+            "kaggle",  # or full path to 'kaggle' if needed
+            "datasets", "version",
+            "-p", KAGGLE_DATASET_FOLDER,
+            "-m", "New video upload"
+        ]
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode == 0:
+            print("✅ Kaggle dataset updated successfully!")
+            print(result.stdout)
+            return True
+        else:
+            print("❌ Error updating Kaggle dataset:", result.stderr)
+            return False
+
+    except Exception as e:
+        print("❌ Exception during Kaggle dataset update:", str(e))
+        return False
+
+def run_kaggle_notebook_selenium():
+    """
+    1) Launches Chrome via Selenium and logs into Kaggle (only on the first upload).
+    2) Navigates to the specified kernel_url.
+    3) On subsequent uploads, reuses the existing Selenium session,
+       refreshes the page, and clicks the necessary buttons (e.g., "More actions",
+       "Check for updates", "Update", "Run All") without opening a new window.
+    """
+    global global_driver, upload_counter
+
+    try:
+        import undetected_chromedriver as uc
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.support.ui import WebDriverWait
+        from selenium.webdriver.support import expected_conditions as EC
+        import time
+
+        # If this is the first upload, create a new driver and log in
+        if upload_counter == 0 or global_driver is None:
+            chrome_options = uc.ChromeOptions()
+            # chrome_options.add_argument("--headless=new")
+            chrome_options.add_argument("--window-size=1920,1080")
+            chrome_options.add_argument("--no-sandbox")
+            chrome_options.add_argument("--disable-background-timer-throttling")
+            chrome_options.add_argument("--disable-backgrounding-occluded-windows")
+            chrome_options.add_argument("--disable-renderer-backgrounding")
+            driver = uc.Chrome(options=chrome_options)
+            # # 1. Navigate to Kaggle login page
+            driver.get("https://www.kaggle.com/account/login")
+            # 2. Login steps (as before):
+            LOGIN_BTN = (By.CSS_SELECTOR, '[class="sc-hJRrWL iwZBhE"]')
+            WebDriverWait(driver, 20).until(EC.element_to_be_clickable(LOGIN_BTN)).click()
+            EMAIL_INPUT = (By.CSS_SELECTOR, '[aria-label="Email or phone"]')
+            WebDriverWait(driver, 20).until(EC.element_to_be_clickable(EMAIL_INPUT)).send_keys("shreerajkalbande25@kgpian.iitkgp.ac.in")
+            buttons = driver.find_elements(By.CSS_SELECTOR, '[jsname="V67aGc"]')
+            for btn in buttons:
+                if btn.text.strip() == "Next":
+                    btn.click()
+                    break
+            PASSWORD = (By.CSS_SELECTOR, '[aria-label="Enter your password"]')
+            WebDriverWait(driver, 20).until(EC.element_to_be_clickable(PASSWORD)).send_keys("Shreeraj@25")
+            buttons = driver.find_elements(By.CSS_SELECTOR, '[jsname="V67aGc"]')
+            for btn in buttons:
+                if btn.text.strip() == "Next":
+                    btn.click()
+                    break
+
+            time.sleep(6)
+            driver.get("https://www.kaggle.com/code/txctyg/videoconv/edit")
+            time.sleep(13)
+
+            # Click "More actions for (Bro123)" button (first time)
+            BRO123_BUTTON = (By.CSS_SELECTOR, '[aria-label="More actions for (Bro123)"]')
+            element = WebDriverWait(driver, 20).until(EC.presence_of_element_located(BRO123_BUTTON))
+            driver.execute_script("arguments[0].scrollIntoView(true);", element)
+            time.sleep(3)
+            driver.execute_script("arguments[0].click();", element)
+
+            # Click "Check for updates" button
+            check_updates_btn = WebDriverWait(driver, 20).until(
+                EC.element_to_be_clickable((By.XPATH, '//p[normalize-space()="Check for updates"]'))
+            )
+            driver.execute_script("arguments[0].click();", check_updates_btn)
+
+            # Click "Update" button
+            RUN_ALL_XPATH = (By.XPATH, "//*[normalize-space()='Update']")
+            element = WebDriverWait(driver, 20).until(EC.element_to_be_clickable(RUN_ALL_XPATH))
+            element.click()
+            time.sleep(13)
+            # Click "Run All" button
+            RUN_ALL_XPATH = (By.XPATH, "//*[normalize-space()='Run All']")
+            element = WebDriverWait(driver, 20).until(EC.element_to_be_clickable(RUN_ALL_XPATH))
+            element.click()
+
+            global_driver = driver  # Save for later reuse
+            print("✅ New Selenium session created and initial actions performed.")
+
+            # This will download all files, remove everything except "final_output.txt",
+            # and print its contents if found.
+            # download_and_keep_only_final(kernel_slug, output_dir="kaggle_output", keep_filename="final_output.txt")
+
+        else:
+            # For subsequent uploads, reuse the existing Selenium driver
+            driver = global_driver
+            print("Reusing existing Selenium session.")
+            # driver.refresh()  # refresh the current page
+            # time.sleep(10)  # wait for the page to reload completely
+
+            # Click "More actions for (Bro123)" again
+            BRO123_BUTTON = (By.CSS_SELECTOR, '[aria-label="More actions for (Bro123)"]')
+            element = WebDriverWait(driver, 20).until(EC.presence_of_element_located(BRO123_BUTTON))
+            driver.execute_script("arguments[0].scrollIntoView(true);", element)
+            time.sleep(3)
+            driver.execute_script("arguments[0].click();", element)
+
+            # Click "Check for updates" button
+            check_updates_btn = WebDriverWait(driver, 20).until(
+                EC.element_to_be_clickable((By.XPATH, '//p[normalize-space()="Check for updates"]'))
+            )
+            driver.execute_script("arguments[0].click();", check_updates_btn)
+
+            # Click "Update" button
+            RUN_ALL_XPATH = (By.XPATH, "//*[normalize-space()='Update']")
+            element = WebDriverWait(driver, 20).until(EC.element_to_be_clickable(RUN_ALL_XPATH))
+            element.click()
+            time.sleep(12)
+            # Click "Run All" button
+            RUN_ALL_XPATH = (By.XPATH, "//*[normalize-space()='Run All']")
+            element = WebDriverWait(driver, 20).until(EC.element_to_be_clickable(RUN_ALL_XPATH))
+            element.click()
+            print("✅ Existing Selenium session refreshed and actions re-triggered.")
+
+
+    except Exception as e:
+        print("❌ An error occurred in run_kaggle_notebook_selenium:", str(e))
+        return False
+
+    return True
+
+
 @app.route("/upload", methods=["GET", "POST"])
 def upload_file():
+    if not current_user.is_authenticated:  # Check if user is logged in
+        flash("You must be logged in to upload files.")
+        return jsonify({"error": "Unauthorized access. Please log in."}), 403  # Forbidden
+
+    global upload_counter, chatgpt_driver, final_summary
+
+    # ✅ First, check if Kaggle is just sending output
+    if request.method == "POST" and "output" in request.form:
+        output = request.form.get("output")
+        print("📥 Received output from Kaggle:", output)
+        final_prompt = f"Here are my snippet summaries: {output} Please combine these snippets into one cohesive summary."
+
+        import undetected_chromedriver as uc
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.support.ui import WebDriverWait
+        from selenium.webdriver.support import expected_conditions as EC
+        import time
+
+        print("Initializing ChatGPT driver and performing login...")
+        chrome_options = uc.ChromeOptions()
+        # chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--disable-background-timer-throttling")
+        chrome_options.add_argument("--disable-backgrounding-occluded-windows")
+        chrome_options.add_argument("--disable-renderer-backgrounding")
+        chatgpt_driver = uc.Chrome(options=chrome_options)
+        chatgpt_driver.get("https://chatgpt.com")
+
+        # time.sleep(random.uniform(2, 4))
+        #
+        # # Perform login steps...
+        # # LOGIN_BTN = (By.CSS_SELECTOR, '[data-testid="login-button"]')
+        # # WebDriverWait(chatgpt_driver, 20).until(EC.element_to_be_clickable(LOGIN_BTN)).click()
+        # login_btn = chatgpt_driver.find_element(By.CSS_SELECTOR, '[data-testid="login-button"]')
+        #
+        # # Create an ActionChains instance
+        # actions = ActionChains(chatgpt_driver)
+        #
+        # # Move to the element, pause, then click it
+        # actions.move_to_element(login_btn).pause(random.uniform(0.5, 1.5)).click(login_btn).perform()
+        # # EMAIL_INPUT = (By.CSS_SELECTOR, '[id="email-input"]')
+        # # WebDriverWait(chatgpt_driver, 20).until(EC.element_to_be_clickable(EMAIL_INPUT)).send_keys(
+        # #     "shreerajkalbande25@gmail.com")
+        #
+        # # NEXTBUTTON = (By.CSS_SELECTOR, 'input.continue-btn')
+        # # WebDriverWait(chatgpt_driver, 20).until(EC.element_to_be_clickable(NEXTBUTTON)).click()
+        # time.sleep(random.uniform(2, 4))
+        #
+        # EMAIL_INPUT = (By.CSS_SELECTOR, '[id="email-input"]')
+        # email_input_elem = WebDriverWait(chatgpt_driver, 20).until(EC.element_to_be_clickable(EMAIL_INPUT))
+        # actions.move_to_element(email_input_elem).pause(random.uniform(0.5, 1.0)).send_keys(
+        #     "shreerajkalb25@gmail.com").perform()
+        #
+        # # # Wait until at least one Next button is present
+        # # WebDriverWait(chatgpt_driver, 15).until(
+        # #     EC.presence_of_element_located((By.CSS_SELECTOR, '[jsname="V67aGc"]'))
+        # # )
+        # # time.sleep(random.uniform(2, 4))
+        #
+        # buttons = chatgpt_driver.find_elements(By.CSS_SELECTOR, '.continue-btn')
+        # found = False
+        # for btn in buttons:
+        #     btn_value = btn.get_attribute("value")
+        #     print("Found button with value:", btn_value)
+        #     if btn_value and btn_value.strip().lower() == "continue":
+        #         found = True
+        #         print("Button location:", btn.location)
+        #         print("Button size:", btn.size)
+        #         if btn.is_displayed():
+        #             print("Button is displayed.")
+        #         else:
+        #             print("Button is NOT displayed.")
+        #
+        #         try:
+        #             actions = ActionChains(chatgpt_driver)
+        #             actions.move_to_element(btn).pause(random.uniform(0.5, 1.5)).click(btn).perform()
+        #             print("Button clicked successfully.")
+        #         except Exception as e:
+        #             print("Failed to click button:", str(e))
+        #         break
+        #
+        # if not found:
+        #     print("No button with value 'Continue' found.")
+        #
+        # captcha_locator = (By.CSS_SELECTOR, '.captcha-overlay')
+        #
+        # try:
+        #     # Wait up to 60 seconds for the captcha overlay to vanish.
+        #     WebDriverWait(chatgpt_driver, 120).until(
+        #         EC.invisibility_of_element_located(captcha_locator)
+        #     )
+        #     print("Captcha has disappeared.")
+        # except TimeoutException:
+        #     print("Captcha did not disappear within 60 seconds. Proceeding anyway.")
+        # try:
+        #     # Wait for the password input field to be visible
+        #     password_input = WebDriverWait(chatgpt_driver, 40).until(
+        #         EC.visibility_of_element_located((By.CSS_SELECTOR, "input#password"))
+        #     )
+        #     password_input.send_keys("swaraj@20012005")
+        #     print("Password typed successfully.")
+        # except TimeoutException:
+        #     print("Timeout waiting for password input field to become visible.")
+        #
+        # # # Now wait for the actual password input to become visible.
+        # # # Often it might be an <input> with type="password".
+        # # password_input = WebDriverWait(chatgpt_driver, 20).until(
+        # #     EC.visibility_of_element_located((By.CSS_SELECTOR, "input[type='password']"))
+        # # )
+        # # password_input.send_keys("swaraj@20012005")
+        # # print("Password typed successfully.")
+        # # Define the PASSWORD locator
+        # # PASSWORD = (By.CSS_SELECTOR, '[id="password"]')
+        # #
+        # # # Increase wait time if needed (e.g., 40 seconds instead of 20)
+        # # try:
+        # #     print("Waiting for the password field to become clickable...")
+        # #     password_elem = WebDriverWait(chatgpt_driver, 40).until(
+        # #         EC.element_to_be_clickable(PASSWORD)
+        # #     )
+        # #     print("Password field is clickable. Typing password...")
+        # #     password_elem.send_keys("swaraj@20012005")
+        # #     print("Password typed successfully.")
+        # # except TimeoutException as e:
+        # #     print("Timeout waiting for password field to be clickable.")
+        # #     # Optionally, try to check if the element exists:
+        # #     elems = chatgpt_driver.find_elements(By.CSS_SELECTOR, '[id="password"]')
+        # #     if elems:
+        # #         print("Found password field elements:", len(elems))
+        # #     else:
+        # #         print("No password field element found.")
+        # #     # As a fallback, you can try clicking via JavaScript if needed:
+        # #     try:
+        # #         if elems:
+        # #             chatgpt_driver.execute_script("arguments[0].click();", elems[0])
+        # #             elems[0].send_keys("swaraj@20012005")
+        # #             print("Password typed via JavaScript click fallback.")
+        # #     except Exception as js_e:
+        # #         print("Fallback method also failed:", str(js_e))
+        # # PASSWORD = (By.CSS_SELECTOR, '[id="password"]')
+        # # WebDriverWait(chatgpt_driver, 20).until(EC.element_to_be_clickable(PASSWORD)).send_keys("swaraj@20012005")
+        #
+        # SUBMIT = (By.CSS_SELECTOR, '[name="action"]')
+        # WebDriverWait(chatgpt_driver, 20).until(EC.element_to_be_clickable(SUBMIT)).click()
+        #
+        # REASON = (By.CSS_SELECTOR, '[aria-label="Reason"]')
+        # WebDriverWait(chatgpt_driver, 10).until(EC.element_to_be_clickable(REASON)).click()
+        # print("ChatGPT driver initialized and logged in.")
+
+        # driver = chatgpt_driver
+        # driver.get("https://chatgpt.com/")
+
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.support.ui import WebDriverWait
+        from selenium.webdriver.support import expected_conditions as EC
+
+        CHAT_BOX = (By.CSS_SELECTOR, '[data-placeholder="Ask anything"]')
+        WebDriverWait(chatgpt_driver, 20).until(EC.element_to_be_clickable(CHAT_BOX)).send_keys(final_prompt)
+
+        SEND_BTN = (By.CSS_SELECTOR, '[data-testid="send-button"]')
+        WebDriverWait(chatgpt_driver, 20).until(EC.element_to_be_clickable(SEND_BTN)).click()
+        time.sleep(10)
+        RESPONSE_LOCATOR = (By.CSS_SELECTOR, '[class="markdown prose w-full break-words dark:prose-invert dark"]')
+        output_element = WebDriverWait(chatgpt_driver, 30).until(EC.presence_of_element_located(RESPONSE_LOCATOR))
+        final_summary = output_element.text
+        print("Final Combined Summary:", final_summary)
+        chatgpt_driver.quit()
+        return jsonify({"summary": final_summary}), 200
+
+    # ✅ Then check for a file upload from the user
     if request.method == "POST":
         if "file" not in request.files:
-            flash("No file part")
+            flash("No file part in form.")
             return redirect(request.url)
-
         file = request.files["file"]
-
         if file.filename == "":
-            flash("No selected file")
+            flash("No selected file.")
             return redirect(request.url)
-
         if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)  # Use secure filename
+            filename = secure_filename(file.filename)
             filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
             file.save(filepath)
+            flash(f"File saved at {filepath}")
 
-            # Upload to Google Drive
-            gfile = drive.CreateFile({"title": filename})
-            gfile.SetContentFile(filepath)
-            gfile.Upload()
+            # Step 1: Update Kaggle dataset
+            ds_success = update_kaggle_dataset(filepath)
+            if ds_success:
+                flash("Video uploaded & Kaggle dataset updated!")
+                # Step 2: Run or refresh the Kaggle notebook via Selenium
+                kernel_success = run_kaggle_notebook_selenium()
+                if kernel_success:
+                    flash("Kaggle notebook re-run triggered successfully!")
+                else:
+                    flash("Kaggle notebook run failed or did not complete.")
+                upload_counter += 1
+                # Replace with actual summary
+            # Return JSON response with the summary so that the frontend can display it.
+                return jsonify({"summary": final_summary}), 200
+            else:
+                flash("Video uploaded, but dataset update failed.")
+                return jsonify({"error": "Dataset update failed."}), 500
 
-            flash("File successfully uploaded to Google Drive")
-            return redirect(url_for("get_all_posts"))  # Change this as needed
-
-    return render_template("upload.html", current_user=current_user)
+    # Render upload form for GET requests
+    return render_template("upload.html")
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -203,13 +529,11 @@ def login():
     if form.validate_on_submit():
         password = form.password.data
         result = db.session.execute(db.select(User).where(User.email == form.email.data))
-        # Note, email in db is unique so will only have one result.
         user = result.scalar()
-        # Email doesn't exist
+
         if not user:
             flash("That email does not exist, please try again.")
             return redirect(url_for('login'))
-        # Password incorrect
         elif not check_password_hash(user.password, password):
             flash('Password incorrect, please try again.')
             return redirect(url_for('login'))
@@ -233,13 +557,10 @@ def get_all_posts():
     return render_template("index.html", all_posts=posts, current_user=current_user)
 
 
-# Add a POST method to be able to post comments
 @app.route("/post/<int:post_id>", methods=["GET", "POST"])
 def show_post(post_id):
     requested_post = db.get_or_404(BlogPost, post_id)
-    # Add the CommentForm to the route
     comment_form = CommentForm()
-    # Only allow logged-in users to comment on posts
     if comment_form.validate_on_submit():
         if not current_user.is_authenticated:
             flash("You need to login or register to comment.")
@@ -255,7 +576,6 @@ def show_post(post_id):
     return render_template("post.html", post=requested_post, current_user=current_user, form=comment_form)
 
 
-# Use a decorator so only an admin user can create new posts
 @app.route("/new-post", methods=["GET", "POST"])
 @admin_only
 def add_new_post():
@@ -275,7 +595,6 @@ def add_new_post():
     return render_template("make-post.html", form=form, current_user=current_user)
 
 
-# Use a decorator so only an admin user can edit a post
 @app.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
 def edit_post(post_id):
     post = db.get_or_404(BlogPost, post_id)
@@ -297,7 +616,6 @@ def edit_post(post_id):
     return render_template("make-post.html", form=edit_form, is_edit=True, current_user=current_user)
 
 
-# Use a decorator so only an admin user can delete a post
 @app.route("/delete/<int:post_id>")
 @admin_only
 def delete_post(post_id):
@@ -316,20 +634,5 @@ def about():
 def contact():
     return render_template("contact.html", current_user=current_user)
 
-video_path = "/Users/shreerajkalbande/PycharmProjects/My-Blog-Website/static/uploads/SampleVideo_1280x720_1mb.mp4"
-cap = cv2.VideoCapture(video_path)
-
-if not cap.isOpened():
-    print("Error: Cannot open video file")
-else:
-    print("Video loaded successfully")
-    ret, frame = cap.read()
-    if ret:
-        print("Frame read successfully")
-    else:
-        print("Failed to read the first frame")
-
-cap.release()
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)

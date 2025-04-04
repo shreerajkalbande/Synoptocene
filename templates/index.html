@@ -1,65 +1,67 @@
-{% include "header.html" %}
+{% extends "base.html" %}
 
-<!-- Page Header-->
-<header
-  class="masthead"
-  style="background-image: url('../static/assets/img/home-bg.jpg')"
->
-  <div class="container position-relative px-4 px-lg-5">
-    <div class="row gx-4 gx-lg-5 justify-content-center">
-      <div class="col-md-10 col-lg-8 col-xl-7">
-        <div class="site-heading">
-          <h1> Shreeraj's Blog</h1>
-          <span class="subheading">Just for Fun</span>
-        </div>
+{% block content %}
+<section class="video-upload-section d-flex align-items-center justify-content-center" style="height: 80vh;">
+  <div class="container text-center">
+    <h2 class="mb-4">Upload a Video for Summarization</h2>
+    <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
+      <div class="form-group mb-3">
+        <input type="file" id="videoFile" name="file" accept="video/*" class="form-control" required>
       </div>
+      <button type="submit" class="btn btn-primary">Upload Video</button>
+    </form>
+    <div id="summaryContainer" class="mt-4">
+      <h3>Audio-Visual Summary:</h3>
+      <p id="summaryText">Waiting for summary...</p>
     </div>
   </div>
-</header>
-<!-- Main Content-->
-<div class="container px-4 px-lg-5">
-  <div class="row gx-4 gx-lg-5 justify-content-center">
-    <div class="col-md-10 col-lg-8 col-xl-7">
-      <!-- Post preview-->
-      {% for post in all_posts %}
-      <div class="post-preview">
-        <a href="{{ url_for('show_post', post_id=post.id) }}">
-          <h2 class="post-title">{{ post.title }}</h2>
-          <h3 class="post-subtitle">{{ post.subtitle }}</h3>
-        </a>
-        <p class="post-meta">
-          Posted by
-          <!-- post.author.name is now a User object -->
-          <a href="#">{{post.author.name}}</a>
-          on {{post.date}}
-          <!-- Only show delete button if user id is 1 (admin user) -->
-          {% if current_user.id == 1: %}
-          <a href="{{url_for('delete_post', post_id=post.id) }}">✘</a>
-          {% endif %}
-        </p>
-      </div>
-      <!-- Divider-->
-      <hr class="my-4" />
-      {% endfor %}
+</section>
 
-      <!-- New Post -->
-      <!-- Only show Create Post button if user id is 1 (admin user) -->
-      {% if current_user.id == 1: %}
-      <div class="d-flex justify-content-end mb-4">
-        <a
-          class="btn btn-primary float-right"
-          href="{{url_for('add_new_post')}}"
-          >Create New Post</a
-        >
-      </div>
-      {% endif %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const uploadForm = document.getElementById('uploadForm');
+    const fileInput = document.getElementById('videoFile');
+    const summaryText = document.getElementById('summaryText');
 
-      <!-- Pager-->
-      <div class="d-flex justify-content-end mb-4">
-        <a class="btn btn-secondary text-uppercase" href="#!">Older Posts →</a>
-      </div>
-    </div>
-  </div>
-</div>
+    // Pass the authentication status from Flask to JavaScript
+    const isAuthenticated = {{ "true" if current_user.is_authenticated else "false" }};
 
-{% include "footer.html" %}
+    uploadForm.addEventListener('submit', async function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        if (!isAuthenticated) {
+            alert("You must be logged in to upload a video.");
+            window.location.href = "/login";  // Redirect to login page
+            return;
+        }
+
+        // Prepare the form data
+        let formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+
+        // Show a loading message
+        summaryText.textContent = "Processing video and generating summary...";
+
+        try {
+            // Use fetch to POST the file to your /upload route
+            let response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            // Expect a JSON response with a "summary" key
+            let data = await response.json();
+            if (data.summary) {
+                summaryText.textContent = data.summary;
+            } else {
+                summaryText.textContent = "No summary returned.";
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            summaryText.textContent = "Error processing video.";
+        }
+    });
+});
+</script>
+
+{% endblock %}
