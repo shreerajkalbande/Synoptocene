@@ -247,7 +247,7 @@ def run_kaggle_notebook_selenium():
             WebDriverWait(driver, 20).until(
                 EC.element_to_be_clickable(EMAIL_INPUT)
             ).send_keys(os.getenv("KAGGLE_EMAIL", ""))
-            
+
             buttons = driver.find_elements(By.CSS_SELECTOR, '[jsname="V67aGc"]')
             for btn in buttons:
                 if btn.text.strip() == "Next":
