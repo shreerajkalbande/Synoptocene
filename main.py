@@ -31,7 +31,7 @@ load_dotenv()  # Load environment variables from .env file
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("FLASK_KEY")
-app.secret_key = "your_secret_key_here"  # Keep this secret
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "your_secret_key_here")  # Keep this secret
 
 ckeditor = CKEditor(app)
 Bootstrap4(app)
@@ -246,7 +246,8 @@ def run_kaggle_notebook_selenium():
             EMAIL_INPUT = (By.CSS_SELECTOR, '[aria-label="Email or phone"]')
             WebDriverWait(driver, 20).until(
                 EC.element_to_be_clickable(EMAIL_INPUT)
-            ).send_keys("shreerajkalbande25@kgpian.iitkgp.ac.in")
+            ).send_keys(os.getenv("KAGGLE_EMAIL", ""))
+            
             buttons = driver.find_elements(By.CSS_SELECTOR, '[jsname="V67aGc"]')
             for btn in buttons:
                 if btn.text.strip() == "Next":
@@ -255,7 +256,7 @@ def run_kaggle_notebook_selenium():
             PASSWORD = (By.CSS_SELECTOR, '[aria-label="Enter your password"]')
             WebDriverWait(driver, 20).until(
                 EC.element_to_be_clickable(PASSWORD)
-            ).send_keys("Shreeraj@25")
+            ).send_keys(os.getenv("KAGGLE_PASSWORD", ""))
             buttons = driver.find_elements(By.CSS_SELECTOR, '[jsname="V67aGc"]')
             for btn in buttons:
                 if btn.text.strip() == "Next":
@@ -404,7 +405,7 @@ def upload_file():
         # # EMAIL_INPUT = (By.CSS_SELECTOR, '[id="email-input"]')
         # # WebDriverWait(chatgpt_driver, 20
         # ).until(EC.element_to_be_clickable(EMAIL_INPUT)).send_keys(
-        # #     "shreerajkalbande25@gmail.com")
+        # #     os.getenv("CHATGPT_EMAIL", ""))
         #
         # # NEXTBUTTON = (By.CSS_SELECTOR, 'input.continue-btn')
         # # WebDriverWait(chatgpt_driver, 20).until(EC.element_to_be_clickable(NEXTBUTTON)).click()
@@ -414,7 +415,7 @@ def upload_file():
         # email_input_elem = WebDriverWait(chatgpt_driver, 20
         # ).until(EC.element_to_be_clickable(EMAIL_INPUT))
         # actions.move_to_element(email_input_elem).pause(random.uniform(0.5, 1.0)).send_keys(
-        #     "shreerajkalb25@gmail.com").perform()
+        #     os.getenv("CHATGPT_EMAIL", "")).perform()
         #
         # # # Wait until at least one Next button is present
         # # WebDriverWait(chatgpt_driver, 15).until(
@@ -463,7 +464,7 @@ def upload_file():
         #     password_input = WebDriverWait(chatgpt_driver, 40).until(
         #         EC.visibility_of_element_located((By.CSS_SELECTOR, "input#password"))
         #     )
-        #     password_input.send_keys("swaraj@20012005")
+        #     password_input.send_keys(os.getenv("CHATGPT_PASSWORD", ""))
         #     print("Password typed successfully.")
         # except TimeoutException:
         #     print("Timeout waiting for password input field to become visible.")
@@ -473,7 +474,7 @@ def upload_file():
         # # password_input = WebDriverWait(chatgpt_driver, 20).until(
         # #     EC.visibility_of_element_located((By.CSS_SELECTOR, "input[type='password']"))
         # # )
-        # # password_input.send_keys("swaraj@20012005")
+        # # password_input.send_keys(os.getenv("CHATGPT_PASSWORD", ""))
         # # print("Password typed successfully.")
         # # Define the PASSWORD locator
         # # PASSWORD = (By.CSS_SELECTOR, '[id="password"]')
@@ -485,7 +486,7 @@ def upload_file():
         # #         EC.element_to_be_clickable(PASSWORD)
         # #     )
         # #     print("Password field is clickable. Typing password...")
-        # #     password_elem.send_keys("swaraj@20012005")
+        # #     password_elem.send_keys(os.getenv("CHATGPT_PASSWORD", ""))
         # #     print("Password typed successfully.")
         # # except TimeoutException as e:
         # #     print("Timeout waiting for password field to be clickable.")
@@ -499,13 +500,13 @@ def upload_file():
         # #     try:
         # #         if elems:
         # #             chatgpt_driver.execute_script("arguments[0].click();", elems[0])
-        # #             elems[0].send_keys("swaraj@20012005")
+        # #             elems[0].send_keys("")
         # #             print("Password typed via JavaScript click fallback.")
         # #     except Exception as js_e:
         # #         print("Fallback method also failed:", str(js_e))
         # # PASSWORD = (By.CSS_SELECTOR, '[id="password"]')
         # # WebDriverWait(chatgpt_driver, 20).until(EC.element_to_be_cli
-        # ckable(PASSWORD)).send_keys("swaraj@20012005")
+        # ckable(PASSWORD)).send_keys("")
         #
         # SUBMIT = (By.CSS_SELECTOR, '[name="action"]')
         # WebDriverWait(chatgpt_driver, 20).until(EC.element_to_be_clickable(SUBMIT)).click()

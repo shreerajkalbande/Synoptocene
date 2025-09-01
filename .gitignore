@@ -1,2 +1,7 @@
 .env
-.env
+.env.example
+*.key
+*.pem
+secrets.txt
+passwords.txt
+
