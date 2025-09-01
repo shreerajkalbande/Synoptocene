@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Synoptocene Logo](https://img.shields.io/badge/SYNOPSIS_+_SCENE_=SYNOPTOCENE-00ff88?style=for-the-badge&logo=video&logoColor=black)
+![Synoptocene Logo](https://img.shields.io/badge/SYNOPSIS_+_SCENE_=_SYNOPTOCENE-00ff88?style=for-the-badge&logo=video&logoColor=black)
 
 ### 🚀 Revolutionary Video Summarization Through Multimodal AI Fusion
 
@@ -320,14 +320,14 @@ Feel free to fork, raise issues, or submit PRs to improve this project!
 
 ### 🚀 Be Part of the Future of Video Intelligence
 
-[![Star](https://img.shields.io/github/stars/shreerajkalbande/Synoptocene?style=social&label=Star&maxAge=2592000)](https://github.com/shreerajkalbande/Synoptocene)
-[![Fork](https://img.shields.io/badge/Fork-Repository-blue?style=for-the-badge&logo=github&logoColor=white)](https://github.com/shreerajkalbande/Synoptocene)
+[![GitHub stars](https://img.shields.io/github/stars/shreerajkalbande/Synoptocene?style=social&label=Star)](https://github.com/shreerajkalbande/Synoptocene)
+[![GitHub forks](https://img.shields.io/github/forks/shreerajkalbande/Synoptocene?style=social&label=Fork)](https://github.com/shreerajkalbande/Synoptocene)
 
 </div>
 
 ---
 
-## 📝 Author & Visionary
+## 📝 Author 
 
 <div align="center">
 
