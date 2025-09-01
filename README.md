@@ -314,18 +314,7 @@ Feel free to fork, raise issues, or submit PRs to improve this project!
 
 ---
 
-## 🌟 Join the Revolution
 
-<div align="center">
-
-### 🚀 Be Part of the Future of Video Intelligence
-
-[![GitHub stars](https://img.shields.io/github/stars/shreerajkalbande/Synoptocene?style=social&label=Star)](https://github.com/shreerajkalbande/Synoptocene)
-[![GitHub forks](https://img.shields.io/github/forks/shreerajkalbande/Synoptocene?style=social&label=Fork)](https://github.com/shreerajkalbande/Synoptocene)
-
-</div>
-
----
 
 ## 📝 Author 
 
@@ -340,22 +329,4 @@ Feel free to fork, raise issues, or submit PRs to improve this project!
 
 </div>
 
----
 
-## ⚠️ Security & Best Practices
-
-- **🔒 Never commit your `.env` file** to version control
-- **🛡️ The `.env` file is already in `.gitignore**
-- **🔄 Rotate your credentials regularly**
-- **🔐 Use strong, unique passwords for each service**
-- **🔑 Consider using 2FA where available**
-
----
-
-<div align="center">
-
-### 🌟 Synoptocene: Where Innovation Meets Intelligence
-
-**Star this repository if you believe in the future of AI-powered video understanding!**
-
-</div>
