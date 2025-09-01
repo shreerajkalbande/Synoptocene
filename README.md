@@ -322,7 +322,7 @@ Feel free to fork, raise issues, or submit PRs to improve this project!
 
 ### 🧠 Shreeraj Kalbande | IIT Kharagpur CSE
 
-**The mind behind the revolution in video intelligence**
+**The mind behind this Idea**
 
 [![Email](https://img.shields.io/badge/Email-shreerajkalbande25%40gmail.com-blue?style=for-the-badge&logo=gmail&logoColor=white)](mailto:shreerajkalbande25@gmail.com)
 [![GitHub](https://img.shields.io/badge/GitHub-Follow-black?style=for-the-badge&logo=github&logoColor=white)](https://github.com/shreerajkalbande)
