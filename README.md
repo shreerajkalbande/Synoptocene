@@ -1,107 +1,75 @@
-# 🌟 Synoptocene: The Future of Video Intelligence
+# 🎬 Synoptocene: Advanced Video Intelligence Platform
 
 <div align="center">
 
-![Synoptocene Logo](https://img.shields.io/badge/SYNOPSIS_+_SCENE_=SYNOPTOCENE-00ff88?style=for-the-badge&logo=video&logoColor=black)
-
-### 🚀 **Revolutionary Video Summarization Through Multimodal AI Fusion** 🚀
-
-[![Made with Python](https://img.shields.io/badge/Powered%20by-Python%203.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![AI Engine](https://img.shields.io/badge/AI%20Engine-CLIP%20%7C%20Whisper%20%7C%20mPLUG--2%20Owl%20%7C%20GPT-ff6b6b?style=for-the-badge&logo=openai&logoColor=white)](https://openai.com)
-[![Computer Vision](https://img.shields.io/badge/Computer%20Vision-OpenCV%20%7C%20Optical%20Flow-00d4ff?style=for-the-badge&logo=opencv&logoColor=white)](https://opencv.org)
-[![Vector Intelligence](https://img.shields.io/badge/Vector%20Intelligence-FAISS%20%7C%20PyTorch-ee4c2c?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org)
-[![Web Framework](https://img.shields.io/badge/Web%20Framework-Flask%20%7C%20Bootstrap-6e6e6e?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com)
-[![License](https://img.shields.io/badge/License-MIT%20%7C%20Open%20Source-yellow?style=for-the-badge&logo=opensource&logoColor=black)](LICENSE)
-
----
-
-### 🌌 **Where Video Meets Intelligence** 🌌
-
-> *"The first-ever pipeline that combines dynamic keyframe extraction, motion-aware analysis, and multimodal AI fusion to create intelligent video summaries that understand both context and motion."*
-
----
+![Python](https://img.shields.io/badge/Python-3.12+-blue?style=for-the-badge&logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-Web%20Framework-gray?style=for-the-badge&logo=flask&logoColor=white)
+![OpenCV](https://img.shields.io/badge/OpenCV-Computer%20Vision-green?style=for-the-badge&logo=opencv&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-Machine%20Learning-red?style=for-the-badge&logo=pytorch&logoColor=white)
+![MIT License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
 </div>
 
-## 🎯 **What Makes Synoptocene Revolutionary?**
+## 🚀 Overview
 
-**Synoptocene** isn't just another video summarizer—it's the **first-ever implementation** of a **7-stage multimodal AI pipeline** that revolutionizes how we understand video content. While others use simple frame sampling, we've created something unprecedented:
+**Synoptocene** is an advanced video summarization platform that combines cutting-edge AI technologies to create intelligent video summaries. It implements a sophisticated 7-stage pipeline that processes video content through dynamic keyframe extraction, motion-aware analysis, and multimodal AI fusion.
 
-- 🧠 **Dynamic Intelligence**: Adapts to video content in real-time
-- 🎭 **Motion-Aware Processing**: Understands the pace and intensity of scenes
-- 🔗 **Multimodal Fusion**: Seamlessly combines video, audio, and text understanding
-- ⚡ **Real-Time Adaptation**: Adjusts processing based on content complexity
-- 🌊 **Flow-Based Analysis**: Uses optical flow to understand motion dynamics
+### Key Innovations
 
----
-
-## 🚀 **Unprecedented Features**
-
-### 🎬 **Core Innovation**
-- 🧠 **Dynamic Keyframe Extraction** - First-ever pixel-level adaptive frame selection
-- 🌊 **Motion-Aware Processing** - Revolutionary optical flow-based content understanding
-- 🔍 **Intelligent Redundancy Removal** - FAISS-powered similarity detection for perfect diversity
-- 🎭 **Adaptive Snippet Generation** - Motion-intensity based dynamic window sizing
-
-### 🤖 **AI-Powered Intelligence**
-- 🎯 **CLIP Semantic Scoring** - Context-aware content relevance ranking
-- 🎵 **Whisper Audio Intelligence** - Word-level temporal audio transcription
-- 🦉 **mPLUG-2 Owl Integration** - Multimodal video-audio-text understanding
-- 🚀 **ChatGPT Final Refinement** - Coherent narrative generation from snippets
-
-### 🔧 **Technical Excellence**
-- ⚡ **GPU Acceleration** - CUDA support for real-time processing
-- 🧮 **Vector Intelligence** - FAISS-based efficient similarity search
-- 🎞️ **Temporal Synchronization** - Perfect video-audio alignment
-- 🔄 **Automated Pipeline** - Kaggle integration with Selenium automation
-
-### 🌐 **Production Ready**
-- 🔐 **Enterprise Security** - Environment-based credential management
-- 📱 **Modern Web Interface** - Responsive design with Bootstrap4
-- 👥 **User Management** - Secure authentication and session handling
-- 📊 **Comprehensive Logging** - Detailed metadata and processing insights
+- 🧠 **Dynamic Keyframe Extraction**: Intelligent frame selection based on content changes
+- 🌊 **Motion-Aware Processing**: Optical flow analysis for scene understanding
+- 🔍 **AI-Powered Scoring**: CLIP-based semantic content ranking
+- 🎵 **Multimodal Integration**: Video, audio, and text processing
+- ⚡ **Real-Time Adaptation**: Dynamic processing based on content complexity
 
 ---
 
-## 🧱 **Cutting-Edge Technology Stack**
+## ✨ Features
 
-<div align="center">
+### 🎬 Core Capabilities
+- **Dynamic Keyframe Extraction**: Intelligent frame selection based on content changes
+- **Motion-Aware Processing**: Optical flow analysis for scene understanding
+- **AI-Powered Scoring**: CLIP-based semantic content ranking
+- **Multimodal Integration**: Video, audio, and text processing
 
-### 🌟 **The Most Advanced AI Pipeline Ever Assembled** 🌟
+### 🤖 AI Technologies
+- **CLIP Semantic Scoring**: Context-aware content relevance ranking
+- **Whisper Audio Processing**: High-quality speech recognition and transcription
+- **mPLUG-2 Owl**: Multimodal video-audio-text understanding
+- **ChatGPT Integration**: Final summary refinement and coherence
 
-</div>
+### 🔧 Technical Features
+- **GPU Acceleration**: CUDA support for real-time processing
+- **Vector Similarity Search**: FAISS-based efficient redundancy removal
+- **Temporal Synchronization**: Perfect video-audio alignment
+- **Automated Pipeline**: Kaggle integration with Selenium automation
 
-| 🎯 **Layer** | 🚀 **Revolutionary Technologies** | 🔬 **Research Impact** |
-|--------------|-----------------------------------|------------------------|
-| **🧠 AI/ML Core** | **CLIP** • **Whisper** • **mPLUG-2 Owl** • **ChatGPT** | State-of-the-art multimodal understanding |
-| **👁️ Computer Vision** | **OpenCV** • **DISOpticalFlow** • **Dynamic Extraction** | Revolutionary motion-aware processing |
-| **🔢 Vector Intelligence** | **FAISS** • **PyTorch** • **NumPy** | Industry-leading similarity search |
-| **🎵 Audio Processing** | **FFmpeg** • **PyDub** • **Audio Segmentation** | Professional-grade audio analysis |
-| **🌐 Web Framework** | **Flask** • **Bootstrap4** • **SQLAlchemy** | Enterprise-grade web architecture |
-| **🔒 Security Layer** | **Environment Variables** • **Password Hashing** | Production-ready security standards |
+### 🌐 Web Platform
+- **Modern Interface**: Responsive design with Bootstrap4
+- **User Authentication**: Secure login/register system
+- **Environment Security**: Credential management with environment variables
+- **Comprehensive Logging**: Detailed metadata and processing insights
 
 ---
 
-### 🏆 **Why This Stack is Revolutionary**
+## 🛠️ Technology Stack
 
-- **🎯 First-Ever Integration**: No other project combines CLIP + Whisper + mPLUG-2 Owl + ChatGPT
-- **🌊 Motion Intelligence**: Unique optical flow-based content understanding
-- **⚡ Real-Time Adaptation**: Dynamic processing based on content complexity
-- **🔗 Multimodal Fusion**: Seamless video-audio-text correlation
+| Component | Technologies |
+|-----------|--------------|
+| **Backend** | Python, Flask, SQLAlchemy |
+| **AI/ML** | CLIP, Whisper, mPLUG-2 Owl, ChatGPT |
+| **Computer Vision** | OpenCV, DISOpticalFlow |
+| **Vector Processing** | FAISS, PyTorch, NumPy |
+| **Audio Processing** | FFmpeg, PyDub |
+| **Frontend** | HTML, CSS, JavaScript, Bootstrap4 |
+| **Database** | SQLite |
+| **Security** | Environment Variables, Password Hashing |
 
 ---
 
-## 🛠️ **The Revolutionary 7-Stage AI Pipeline**
+## 🛠️ How It Works
 
-<div align="center">
-
-### 🌟 **A Breakthrough in Video Intelligence** 🌟
-
-> *"While others sample frames randomly, we understand content. While others ignore motion, we analyze flow. While others process separately, we fuse multimodally."*
-
-</div>
-
-**Synoptocene** implements the **world's first** 7-stage multimodal AI pipeline that revolutionizes video understanding through intelligent content analysis, motion-aware processing, and seamless AI fusion:
+Synoptocene implements a sophisticated 7-stage video processing pipeline that combines computer vision, audio processing, and AI to create intelligent video summaries:
 
 #### **Stage 1: Dynamic Keyframe Extraction** 🔍
 - **Intelligent Frame Selection**: Uses pixel-level difference analysis with configurable thresholds
@@ -164,6 +132,7 @@ Snippet Generation → mPLUG-2 Owl → ChatGPT → Final Summary
 - **Output Format**: MP4 video snippets + WAV audio + JSON metadata
 
 ---
+
 
 ## 🧪 Setup & Run
 
@@ -255,32 +224,32 @@ python -m pytest tests/
 
 ---
 
-## 🔬 Advanced Algorithms & Research
+## 🔬 Advanced Algorithms
 
-### **Dynamic Keyframe Extraction Algorithm**
-- **Pixel-Level Analysis**: Implements sophisticated difference detection using OpenCV
-- **Adaptive Thresholding**: Configurable parameters for different video types and content
-- **Memory Optimization**: Efficient batch processing for large video files
+### **Dynamic Keyframe Extraction**
+- Pixel-level difference analysis using OpenCV
+- Adaptive thresholding for different video types
+- Memory-optimized batch processing
 
 ### **CLIP-Based Semantic Scoring**
-- **Multimodal Understanding**: Leverages OpenAI's CLIP for image-text correlation
-- **Feature Embedding**: High-dimensional vector representations for similarity analysis
-- **GPU Acceleration**: CUDA support for real-time processing
+- Multimodal understanding with OpenAI's CLIP
+- High-dimensional feature embeddings
+- GPU-accelerated processing
 
 ### **FAISS Vector Similarity Search**
-- **Efficient Redundancy Removal**: Cosine similarity-based duplicate detection
-- **Scalable Processing**: Handles large numbers of keyframes efficiently
-- **Quality Preservation**: Maintains content diversity while eliminating redundancy
+- Efficient cosine similarity-based redundancy removal
+- Scalable processing for large keyframe sets
+- Quality preservation through diversity maintenance
 
 ### **Motion-Aware Snippet Generation**
-- **Optical Flow Analysis**: Advanced motion detection using DISOpticalFlow
-- **Adaptive Window Sizing**: Dynamic snippet length based on motion intensity
-- **Temporal Synchronization**: Precise alignment of video and audio content
+- Optical flow analysis using DISOpticalFlow
+- Adaptive window sizing based on motion intensity
+- Temporal synchronization of video and audio
 
 ### **Multimodal AI Integration**
-- **Whisper Transcription**: High-quality audio-to-text conversion
-- **mPLUG-2 Owl**: State-of-the-art multimodal language model
-- **ChatGPT Enhancement**: Final refinement and coherence improvement
+- Whisper for high-quality audio transcription
+- mPLUG-2 Owl for multimodal understanding
+- ChatGPT for final summary refinement
 
 ---
 
@@ -300,72 +269,18 @@ Feel free to fork, raise issues, or submit PRs to improve this project!
 
 ---
 
-## 🏆 **Why Synoptocene is Revolutionary**
+## 📝 Author
 
-<div align="center">
+**Shreeraj Kalbande** | IIT Kharagpur CSE
 
-### 🌟 **The Future of Video Intelligence is Here** 🌟
-
-</div>
-
-**Synoptocene** represents a **paradigm shift** in video processing:
-
-- 🚀 **First-Ever Implementation**: No other project combines these 7 AI technologies
-- 🧠 **Intelligent Processing**: Understands content, not just samples frames
-- 🌊 **Motion-Aware Analysis**: Revolutionary optical flow integration
-- 🔗 **Multimodal Fusion**: Seamless video-audio-text correlation
-- ⚡ **Real-Time Adaptation**: Dynamic processing based on content complexity
-- 🎯 **Research-Grade Quality**: Production-ready with academic rigor
+Email: [shreerajkalbande25@gmail.com](mailto:shreerajkalbande25@gmail.com)
 
 ---
 
-## 🌟 **Join the Revolution**
+## ⚠️ Security Notes
 
-<div align="center">
-
-### 🚀 **Be Part of the Future of Video Intelligence** 🚀
-
-[![Star](https://img.shields.io/github/stars/shreerajkalbande/Synoptocene?style=social&label=Star&maxAge=2592000)](https://github.com/shreerajkalbande/Synoptocene)
-[![Fork](https://img.shields.io/github/forks/shreerajkalbande/Synoptocene?style=social&label=Fork&maxAge=2592000)](https://github.com/shreerajkalbande/Synoptocene)
-[![Watch](https://img.shields.io/github/watchers/shreerajkalbande/Synoptocene?style=social&label=Watch&maxAge=2592000)](https://github.com/shreerajkalbande/Synoptocene)
-
-</div>
-
----
-
-## 📝 **Author & Visionary**
-
-<div align="center">
-
-### 🧠 **Shreeraj Kalbande** | IIT Kharagpur CSE 🧠
-
-**The mind behind the revolution in video intelligence**
-
-[![Email](https://img.shields.io/badge/Email-shreerajkalbande25%40gmail.com-blue?style=for-the-badge&logo=gmail&logoColor=white)](mailto:shreerajkalbande25@gmail.com)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/shreerajkalbande)
-[![GitHub](https://img.shields.io/badge/GitHub-Follow-black?style=for-the-badge&logo=github&logoColor=white)](https://github.com/shreerajkalbande)
-
-</div>
-
----
-
-## ⚠️ **Security & Best Practices**
-
-- **🔒 Never commit your `.env` file** to version control
-- **🛡️ The `.env` file is already in `.gitignore**
-- **🔄 Rotate your credentials regularly**
-- **🔐 Use strong, unique passwords for each service**
-- **🔑 Consider using 2FA where available**
-- **📊 Monitor for security alerts and updates**
-
----
-
-<div align="center">
-
-### 🌟 **Synoptocene: Where Innovation Meets Intelligence** 🌟
-
-**Star this repository if you believe in the future of AI-powered video understanding!**
-
-[![Made with ❤️](https://img.shields.io/badge/Made%20with-❤️-red?style=for-the-badge)](https://github.com/shreerajkalbande/Synoptocene)
-
-</div>
+- Never commit your `.env` file to version control
+- The `.env` file is already in `.gitignore`
+- Rotate your credentials regularly
+- Use strong, unique passwords for each service
+- Consider using 2FA where available
