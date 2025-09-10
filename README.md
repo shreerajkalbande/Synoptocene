@@ -21,7 +21,7 @@
 
 ## 🎯 What Makes Synoptocene Revolutionary
 
-**Synoptocene** is the first-ever implementation of a 7-stage multimodal AI pipeline that revolutionizes how we understand video content. While others use simple frame sampling, we've created something unprecedented:
+**Synoptocene** is the first-ever implementation of a 7-stage multimodal AI pipeline that revolutionizes how we understand video content. While others use simple frame sampling, I've created something unprecedented:
 
 - 🧠 **Dynamic Intelligence**: Adapts to video content in real-time
 - 🎭 **Motion-Aware Processing**: Understands the pace and intensity of scenes
