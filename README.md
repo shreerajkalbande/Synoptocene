@@ -15,8 +15,6 @@
 
 ---
 
-### 🌌 Where Video Meets Intelligence
-
 </div>
 
 ## 🎯 What Makes Synoptocene Revolutionary
@@ -31,7 +29,7 @@
 
 ---
 
-## 🚀 Unprecedented Features
+##  Unprecedented Features
 
 ### 🎬 Core Innovation
 - **Dynamic Keyframe Extraction**: First-ever pixel-level adaptive frame selection
