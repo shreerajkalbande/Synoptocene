@@ -4,7 +4,7 @@
 
 ![Synoptocene Logo](https://img.shields.io/badge/SYNOPSIS_+_SCENE_=_SYNOPTOCENE-00ff88?style=for-the-badge&logo=video&logoColor=black)
 
-### 🚀 Revolutionary Video Summarization Through Multimodal AI Fusion
+### Revolutionary Video Summarization Through Multimodal AI Fusion
 
 [![Made with Python](https://img.shields.io/badge/Powered%20by-Python%203.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![AI Engine](https://img.shields.io/badge/AI%20Engine-CLIP%20%7C%20Whisper%20%7C%20mPLUG--2%20Owl%20%7C%20GPT-ff6b6b?style=for-the-badge&logo=openai&logoColor=white)](https://openai.com)
