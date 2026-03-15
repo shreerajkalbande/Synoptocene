@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🌟 Synoptocene: The Future of Video Intelligence
+# Synoptocene: The Future of Video Intelligence
 
 ![Synoptocene Logo](https://img.shields.io/badge/SYNOPSIS_+_SCENE_=_SYNOPTOCENE-00ff88?style=for-the-badge&logo=video&logoColor=black)
 
