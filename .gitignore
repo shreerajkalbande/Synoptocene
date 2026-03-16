@@ -1,3 +1,4 @@
+# Environment & secrets
 .env
 .env.example
 *.key
@@ -5,3 +6,34 @@
 secrets.txt
 passwords.txt
 
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+venv/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+instance/
+
+# Uploads
+static/uploads/*
+!static/uploads/.gitkeep
+
+# Pipeline outputs
+snippets/

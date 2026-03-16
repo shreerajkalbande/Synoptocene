@@ -1,0 +1,14 @@
+# GPU Pipeline Dependencies
+# Install alongside requirements.txt on a CUDA-capable machine:
+#   pip install -r requirements.txt -r requirements-pipeline.txt
+
+numpy
+opencv-python==4.9.0.80
+torch
+torchvision
+transformers
+openai-whisper==20231106
+pydub
+ffmpeg-python
+faiss-cpu
+tqdm==4.67.1
