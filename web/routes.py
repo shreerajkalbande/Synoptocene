@@ -218,7 +218,7 @@ def _update_kaggle_dataset(video_file_path: str) -> bool:
 
 def _run_kaggle_notebook_selenium() -> bool:
     """Launch or reuse a Selenium session to trigger the Kaggle notebook."""
-    global _global_driver, _upload_counter
+    global _global_driver
 
     try:
         import undetected_chromedriver as uc
