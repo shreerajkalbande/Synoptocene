@@ -1,5 +1,20 @@
 # Synoptocene
 
+[![Python 3.8+](https://img.shields.io/badge/Python-3.8+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org/)
+[![CUDA](https://img.shields.io/badge/CUDA-76B900?style=for-the-badge&logo=nvidia&logoColor=white)](https://developer.nvidia.com/cuda-toolkit)
+[![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
+
+[![OpenAI CLIP](https://img.shields.io/badge/CLIP_ViT--B/32-412991?style=for-the-badge&logo=openai&logoColor=white)](https://github.com/openai/CLIP)
+[![Whisper](https://img.shields.io/badge/Whisper-74AA9C?style=for-the-badge&logo=openai&logoColor=white)](https://github.com/openai/whisper)
+[![mPLUG-Owl2](https://img.shields.io/badge/mPLUG--Owl2-FF6F00?style=for-the-badge&logo=alibaba-cloud&logoColor=white)](https://github.com/X-PLUG/mPLUG-Owl)
+[![Transformers](https://img.shields.io/badge/Transformers-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/transformers)
+
+[![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)](https://opencv.org/)
+[![FFmpeg](https://img.shields.io/badge/FFmpeg-007808?style=for-the-badge&logo=ffmpeg&logoColor=white)](https://ffmpeg.org/)
+[![FAISS](https://img.shields.io/badge/FAISS-0467DF?style=for-the-badge&logo=meta&logoColor=white)](https://github.com/facebookresearch/faiss)
+[![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)](https://numpy.org/)
+
 **Multimodal video summarization pipeline combining computer vision, NLP, and deep learning.**
 
 Upload a video &rarr; extract semantically relevant snippets &rarr; transcribe audio &rarr; generate a coherent multimodal summary. The system fuses visual, auditory, and textual signals through a 7-stage pipeline built on CLIP, Whisper, optical flow analysis, FAISS vector search, and mPLUG-Owl.
