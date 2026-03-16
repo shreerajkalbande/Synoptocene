@@ -43,7 +43,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="mainNav">
       <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="{{ url_for('get_all_posts') }}">Synoptocene</a>
+        <a class="navbar-brand" href="{{ url_for('main.get_all_posts') }}">Synoptocene</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
           aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu <i class="fas fa-bars"></i>
@@ -51,25 +51,25 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ms-auto py-4 py-lg-0">
             <li class="nav-item">
-              <a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('get_all_posts') }}">Home</a>
+              <a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('main.get_all_posts') }}">Home</a>
             </li>
             {% if not current_user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('login') }}">Login</a>
+              <a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('main.login') }}">Login</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('register') }}">Register</a>
+              <a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('main.register') }}">Register</a>
             </li>
             {% else %}
             <li class="nav-item">
-              <a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('logout') }}">Log Out</a>
+              <a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('main.logout') }}">Log Out</a>
             </li>
             {% endif %}
             <li class="nav-item">
-              <a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('about') }}">About</a>
+              <a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('main.about') }}">About</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('contact') }}">Contact</a>
+              <a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('main.contact') }}">Contact</a>
             </li>
           </ul>
         </div>
