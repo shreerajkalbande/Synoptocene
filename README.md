@@ -63,9 +63,9 @@ CLIP ranks frames by **semantic relevance** to a text prompt, but nearby frames 
 ### Why motion-adaptive snippet windows?
 
 The optimal temporal context around a keyframe depends on the pace of the scene:
-- **Low motion** (< 0.3 optical flow magnitude): 7-frame window &mdash; static content needs more context
-- **Medium motion** (0.3 - 0.7): 5-frame window &mdash; balanced coverage
-- **High motion** (> 0.7): 3-frame window &mdash; rapid changes, stay focused
+- **Low motion** (< 0.3 optical flow magnitude): 14-frame window &mdash; static content needs more context
+- **Medium motion** (0.3 - 0.7): 10-frame window &mdash; balanced coverage
+- **High motion** (> 0.7): 6-frame window &mdash; rapid changes, stay focused
 
 Window boundaries are then expanded to align with Whisper transcript segments, ensuring each snippet has complete sentences rather than mid-word cuts.
 
