@@ -54,7 +54,7 @@ Upload a video &rarr; extract semantically relevant snippets &rarr; transcribe a
 
 ### Why adaptive keyframe extraction instead of uniform sampling?
 
-Uniform sampling treats a static lecture slide the same as a fast-paced action sequence. This pipeline uses **pixel-level frame differencing** with a configurable threshold (`pixel_thresh=30`) to detect scene changes, plus a minimum interval guarantee (`min_interval=10`) to avoid over-representation of static content. This reduces the keyframe set by 80-95% while preserving all semantically distinct visual content.
+Uniform sampling treats a static lecture slide the same as a fast-paced action sequence. This pipeline uses **pixel-level frame differencing** with a configurable threshold (`pixel_thresh=30`) to detect scene changes, plus a minimum interval guarantee (`min_interval=10`) to avoid over-representation of static content. This reduces the keyframe set by 80-95% while preserving all the distinct visual content.
 
 ### Why CLIP scoring + FAISS pruning as a two-stage filter?
 
